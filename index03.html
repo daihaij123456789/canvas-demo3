@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<canvas id="canvas"></canvas>
+	<script type="text/javascript">
+	window.onload=function () {
+		
+		var canvas=document.getElementById("canvas");
+		var context=canvas.getContext("2d");
+		canvas.width=1200;
+		canvas.height=800;
+		/*var line=context.createLinearGradient(0, 0, 0, canvas.height);
+		line.addColorStop(0,"black");
+		line.addColorStop(1.0,"#035");
+		context.fillStyle =line;*/
+		var radia=context.createRadialGradient(canvas.width/2, canvas.height, 0, canvas.width/2, canvas.height, canvas.height);
+		radia.addColorStop(0,"#035");
+		radia.addColorStop(1.0,"black");
+		context.fillStyle = radia;
+		context.fillRect(0, 0,canvas.width,canvas.height);
+		for (var i = 0; i < 200; i++) {
+			var r=Math.random()*5+5;
+			var x=Math.random()*canvas.width;
+			var y=Math.random()*canvas.height*0.65;
+			var a=Math.random()*360;
+			drawStar(context,x,y,r,a);
+		}
+		fillMoon(context,3,700,100,100,30);
+	}
+
+		function fillMoon(ctx,d,x,y,R,rot) {
+			ctx.save();
+			ctx.translate(x, y);
+			ctx.rotate(rot/180*Math.PI);
+			ctx.scale(R, R);
+			pathMoon(ctx,d);
+			ctx.fillStyle = "#fb5";
+			ctx.fill();
+			ctx.restore();
+		}
+
+		function pathMoon(ctx,d) {
+			ctx.beginPath();
+			ctx.arc(0, 0, 1, 0.5*Math.PI, 1.5*Math.PI, true);
+			ctx.moveTo(0, -1);
+			ctx.arcTo(d, 0, 0, 1, dis(0,-1,d,0)/d);
+			ctx.closePath();
+		}
+
+		function dis(x1,x2,y1,y2) {
+			return Math.sqrt((x1-x2)*(x1-x2)+(y1-y2)*(y1-y2));
+		}
+
+		function drawStar(ctx,x,y,R,rot) {
+			ctx.save();
+			ctx.translate(x, y);
+			ctx.rotate(rot/180*Math.PI);
+			ctx.scale(R, R);
+			ctx.fillStyle = "#fb3";
+			starPath(ctx);
+			//ctx.strokeStyle = "#fb5";
+			//ctx.lineWidth = 3;
+			//ctx.lineJoin = "round";
+			ctx.fill();
+			//ctx.stroke();
+			ctx.restore();
+		}
+		function starPath(ctx) {
+			ctx.beginPath();
+			for (var i = 0; i < 5; i++) {
+				ctx.lineTo(Math.cos((18+i*72)/180*Math.PI), -Math.sin((18+i*72)/180*Math.PI));
+				ctx.lineTo(Math.cos((54+i*72)/180*Math.PI)*0.5, -Math.sin((54+i*72)/180*Math.PI)*0.5);
+			}
+			ctx.closePath();
+			
+			
+		}
+	</script>
+</body>
+</html>
